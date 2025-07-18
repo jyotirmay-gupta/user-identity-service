@@ -6,7 +6,7 @@ import com.redashwood.useridentity.dto.DeleteUserResponseTO;
 
 public interface DeleteUserService {
 
-    DeleteUserResponseTO deleteUserByEmailId(DeleteUserByEmailRequestTO deleteUserByEmailRequestTO);
+    DeleteUserResponseTO deleteUserByEmailId(String emailId);
 
-    DeleteUserResponseTO deleteUserByUsername(DeleteUserByUsernameRequestTO deleteUserByUsernameRequestTO);
+    DeleteUserResponseTO deleteUserByUsername(String username);
 }

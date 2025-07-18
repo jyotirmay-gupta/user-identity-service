@@ -1,6 +1,6 @@
 package com.redashwood.useridentity.dto;
 
-public record UpdateCredentialsRequestTO(
+public record UpdateCredentialRequestTO(
 
         String username,
 

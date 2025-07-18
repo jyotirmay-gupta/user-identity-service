@@ -9,9 +9,9 @@ import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserIdentityController {
@@ -33,41 +33,46 @@ public class UserIdentityController {
         this.deleteUserService = deleteUserService;
     }
 
+    @PostMapping(value = "/user/identity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RegisterUserResponseTO> registerUser(@Valid @RequestBody RegisterUserRequestTO registerUserRequestTO) {
         LOGGER.info("Received request to register a user: {} {} {}", registerUserRequestTO.firstName(), registerUserRequestTO.middleName(), registerUserRequestTO.lastName());
         RegisterUserResponseTO registerUserResponseTO = registerUserService.registerUser(registerUserRequestTO);
         return new ResponseEntity<>(registerUserResponseTO, HttpStatus.CREATED);
     }
 
+    @PutMapping(value = "/user/identity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UpdateUserResponseTO> updateUser(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO) {
 
         UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUser(updateUserRequestTO);
         return new ResponseEntity<>(updateUserResponseTO, HttpStatus.OK);
     }
 
-    public ResponseEntity<GetUserResponseTO> getUserByEmailId(@Valid @RequestBody GetUserByEmailRequestTO getUserByEmailRequestTO) {
+    @GetMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GetUserResponseTO> getUserByEmailId(@RequestParam(required = true) String email) {
 
-        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmailId(getUserByEmailRequestTO);
+        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmailId(email);
         return new ResponseEntity<>(getUserResponseTO, HttpStatus.OK);
     }
 
-    public ResponseEntity<GetUserResponseTO> getUserByUsername(@Valid @RequestBody GetUserByUsernameRequestTO getUserByUsernameRequestTO) {
+    @GetMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GetUserResponseTO> getUserByUsername(@RequestParam(required = true) String username) {
 
-        GetUserResponseTO getUserResponseTO = getUserService.getUserByUsername(getUserByUsernameRequestTO);
+        GetUserResponseTO getUserResponseTO = getUserService.getUserByUsername(username);
         return new ResponseEntity<>(getUserResponseTO, HttpStatus.OK);
     }
 
-    public ResponseEntity<DeleteUserResponseTO> deleteUserByEmailId(@Valid @RequestBody DeleteUserByEmailRequestTO deleteUserByEmailRequestTO) {
+    @DeleteMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DeleteUserResponseTO> deleteUserByEmailId(@RequestParam(required = true) String email) {
 
-        DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByEmailId(deleteUserByEmailRequestTO);
+        DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByEmailId(email);
         return new ResponseEntity<>(deleteUserResponseTO, HttpStatus.OK);
     }
 
-    public ResponseEntity<DeleteUserResponseTO> deleteUserByUsername(@Valid @RequestBody DeleteUserByUsernameRequestTO deleteUserByUsernameRequestTO) {
+    @DeleteMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DeleteUserResponseTO> deleteUserByUsername(@RequestParam(required = true) String username) {
 
-        DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByUsername(deleteUserByUsernameRequestTO);
+        DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByUsername(username);
         return new ResponseEntity<>(deleteUserResponseTO, HttpStatus.OK);
-
     }
 
 }
