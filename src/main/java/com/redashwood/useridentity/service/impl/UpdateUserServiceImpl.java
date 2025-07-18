@@ -6,8 +6,14 @@ import com.redashwood.useridentity.service.UpdateUserService;
 
 public class UpdateUserServiceImpl implements UpdateUserService {
 
+
     @Override
-    public UpdateUserResponseTO updateUser(UpdateUserRequestTO updateUserRequestTO) {
+    public UpdateUserResponseTO updateUserByEmailId(UpdateUserRequestTO updateUserRequestTO, String emailId) {
+        return null;
+    }
+
+    @Override
+    public UpdateUserResponseTO updateUserByUsername(UpdateUserRequestTO updateUserRequestTO, String username) {
         return null;
     }
 }

@@ -33,42 +33,49 @@ public class UserIdentityController {
         this.deleteUserService = deleteUserService;
     }
 
-    @PostMapping(value = "/user/identity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/user/identity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
     public ResponseEntity<RegisterUserResponseTO> registerUser(@Valid @RequestBody RegisterUserRequestTO registerUserRequestTO) {
         LOGGER.info("Received request to register a user: {} {} {}", registerUserRequestTO.firstName(), registerUserRequestTO.middleName(), registerUserRequestTO.lastName());
         RegisterUserResponseTO registerUserResponseTO = registerUserService.registerUser(registerUserRequestTO);
         return new ResponseEntity<>(registerUserResponseTO, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/user/identity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UpdateUserResponseTO> updateUser(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO) {
+    @PutMapping(value = "/user/identity", params = "email", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
+    public ResponseEntity<UpdateUserResponseTO> updateUserByEmailId(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO, @RequestParam(required = true) String email) {
 
-        UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUser(updateUserRequestTO);
+        UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUserByEmailId(updateUserRequestTO,email);
         return new ResponseEntity<>(updateUserResponseTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/user/identity", params = "username", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
+    public ResponseEntity<UpdateUserResponseTO> updateUserByUsername(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO, @RequestParam(required = true) String username) {
+
+        UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUserByUsername(updateUserRequestTO, username);
+        return new ResponseEntity<>(updateUserResponseTO, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
     public ResponseEntity<GetUserResponseTO> getUserByEmailId(@RequestParam(required = true) String email) {
 
         GetUserResponseTO getUserResponseTO = getUserService.getUserByEmailId(email);
         return new ResponseEntity<>(getUserResponseTO, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
     public ResponseEntity<GetUserResponseTO> getUserByUsername(@RequestParam(required = true) String username) {
 
         GetUserResponseTO getUserResponseTO = getUserService.getUserByUsername(username);
         return new ResponseEntity<>(getUserResponseTO, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
     public ResponseEntity<DeleteUserResponseTO> deleteUserByEmailId(@RequestParam(required = true) String email) {
 
         DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByEmailId(email);
         return new ResponseEntity<>(deleteUserResponseTO, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
     public ResponseEntity<DeleteUserResponseTO> deleteUserByUsername(@RequestParam(required = true) String username) {
 
         DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByUsername(username);

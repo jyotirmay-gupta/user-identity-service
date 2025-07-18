@@ -1,4 +1,23 @@
 package com.redashwood.useridentity.dto;
 
-public record UpdateUserRequestTO() {
+import com.redashwood.useridentity.dto.enums.GenderEnum;
+
+public record UpdateUserRequestTO(
+
+        String firstName,
+
+        String middleName,
+
+        String lastName,
+
+        Integer age,
+
+        GenderEnum gender,
+
+        AddressTO address,
+
+        ContactTO contact
+) {
+
+
 }
