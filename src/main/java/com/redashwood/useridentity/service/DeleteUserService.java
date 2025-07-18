@@ -1,0 +1,12 @@
+package com.redashwood.useridentity.service;
+
+import com.redashwood.useridentity.dto.DeleteUserByEmailRequestTO;
+import com.redashwood.useridentity.dto.DeleteUserByUsernameRequestTO;
+import com.redashwood.useridentity.dto.DeleteUserResponseTO;
+
+public interface DeleteUserService {
+
+    DeleteUserResponseTO deleteUserByEmailId(DeleteUserByEmailRequestTO deleteUserByEmailRequestTO);
+
+    DeleteUserResponseTO deleteUserByUsername(DeleteUserByUsernameRequestTO deleteUserByUsernameRequestTO);
+}
