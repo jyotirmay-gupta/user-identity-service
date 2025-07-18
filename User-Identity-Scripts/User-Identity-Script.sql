@@ -18,6 +18,9 @@ GRANT CREATE ON SCHEMA user_identity_schema TO identity_user;
 ALTER DEFAULT PRIVILEGES IN SCHEMA user_identity_schema
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO identity_user;
 GRANT USAGE, SELECT, UPDATE ON ALL SEQUENCES IN SCHEMA user_identity_schema TO identity_user;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA user_identity_schema TO identity_user;
+
+ALTER SCHEMA user_identity_schema OWNER TO identity_user;
 
 -- Schema: user_identity_schema
 
@@ -77,3 +80,10 @@ CREATE TABLE user_identity_schema.user_contact (
         REFERENCES user_identity_schema.user_identity (user_id)
         ON DELETE CASCADE
 );
+
+ALTER TABLE user_identity_schema.user_identity OWNER TO identity_user;
+ALTER TABLE user_identity_schema.user_credential OWNER TO identity_user;
+ALTER TABLE user_identity_schema.user_address OWNER TO identity_user;
+ALTER TABLE user_identity_schema.user_contact OWNER TO identity_user;
+
+

@@ -1,5 +1,7 @@
 package com.redashwood.useridentity.dto.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum GenderEnum {
 
     MALE("Male"),
@@ -26,6 +28,7 @@ public enum GenderEnum {
         throw new IllegalArgumentException("Unknown gender value: " + value);
     }
 
+    @JsonValue
     public String getValue() {
         return value;
     }

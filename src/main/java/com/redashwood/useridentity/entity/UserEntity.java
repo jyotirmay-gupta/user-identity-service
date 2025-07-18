@@ -27,6 +27,7 @@ public class UserEntity {
     @Column(name = "age")
     private Integer age;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private GenderEnum gender;
 
