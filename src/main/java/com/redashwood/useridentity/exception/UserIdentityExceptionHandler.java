@@ -32,6 +32,14 @@ public class UserIdentityExceptionHandler {
         return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<GenericErrorResponseTO> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+        ErrorTO errorTO = new ErrorTO(ex.getErrorCode(), ex.getMessage());
+        GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
+        logErrorMessage(errorTO);
+        return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<GenericErrorResponseTO> handleValidationErrors(MethodArgumentNotValidException ex) {
         FieldError fieldError = ex.getBindingResult().getFieldErrors().getFirst();

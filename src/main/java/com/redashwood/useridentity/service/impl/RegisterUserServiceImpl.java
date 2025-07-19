@@ -5,6 +5,8 @@ import com.redashwood.useridentity.dto.RegisterUserRequestTO;
 import com.redashwood.useridentity.dto.RegisterUserResponseTO;
 import com.redashwood.useridentity.dto.UserInformationTO;
 import com.redashwood.useridentity.entity.UserEntity;
+import com.redashwood.useridentity.exception.UserAlreadyExistsException;
+import com.redashwood.useridentity.exception.UserNotFoundException;
 import com.redashwood.useridentity.mapper.UserIdentityMapper;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.RegisterUserService;
@@ -34,6 +36,14 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "register_user_tx")
     public RegisterUserResponseTO registerUser(RegisterUserRequestTO registerUserRequestTO) {
+
+        userIdentityRepository.findByEmailWithAllRelations(registerUserRequestTO.contact().email(), true)
+                .ifPresent( u -> {throw new UserAlreadyExistsException("ERR400", "User already exists with emailId %s.",
+                        registerUserRequestTO.contact().email());});
+
+        userIdentityRepository.findByUsernameWithAllRelations(registerUserRequestTO.username(), true)
+                .ifPresent(u -> {throw new UserAlreadyExistsException("ERR400", "User already exists with username %s.",
+                        registerUserRequestTO.username());});
 
         String password = identityUtils.generateRandomPassword();
         String encryptedPassword = identityUtils.encryptPassword(password);
