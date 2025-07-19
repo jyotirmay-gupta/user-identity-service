@@ -17,15 +17,16 @@ public class UserIdentityExceptionHandler {
     public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {
 
         ErrorTO errorTO = new ErrorTO(ex.getErrorCode(), ex.getMessage());
+        GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
 
         String className = ex.getStackTrace().length > 0 ? ex.getStackTrace()[0].getClassName() : null;
         if (className == null) {
-            return new ResponseEntity<>(errorTO, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         try {
-            String simpleClassName = Class.forName(className).getSimpleName();
-            return switch (simpleClassName) {
+            String interfaceName = String.valueOf(Class.forName(className).getInterfaces()[0].getSimpleName());
+            return switch (interfaceName) {
                 case REGISTER_USER_SERVICE ->
                         new ResponseEntity<>(new RegisterUserResponseTO(null, null, errorTO), HttpStatus.NOT_FOUND);
                 case UPDATE_USER_SERVICE ->
@@ -36,11 +37,11 @@ public class UserIdentityExceptionHandler {
                         new ResponseEntity<>(new DeleteUserResponseTO(null, errorTO), HttpStatus.NOT_FOUND);
                 case UPDATE_USER_CREDENTIAL_SERVICE ->
                         new ResponseEntity<>(new UpdateCredentialResponseTO(null, errorTO), HttpStatus.NOT_FOUND);
-                default -> new ResponseEntity<>(errorTO, HttpStatus.INTERNAL_SERVER_ERROR);
+                default -> new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
             };
 
-        } catch (ClassNotFoundException e) {
-            return new ResponseEntity<>(errorTO, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -49,10 +50,11 @@ public class UserIdentityExceptionHandler {
 
         FieldError fieldError = ex.getBindingResult().getFieldErrors().getFirst();
         ErrorTO errorTO = new ErrorTO("ERR400", fieldError.getDefaultMessage());
+        GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
 
         String className = ex.getStackTrace().length > 0 ? ex.getStackTrace()[0].getClassName() : null;
         if (className == null) {
-            return new ResponseEntity<>(errorTO, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         try {
@@ -68,11 +70,11 @@ public class UserIdentityExceptionHandler {
                         new ResponseEntity<>(new DeleteUserResponseTO(null, errorTO), HttpStatus.BAD_REQUEST);
                 case UPDATE_USER_CREDENTIAL_SERVICE ->
                         new ResponseEntity<>(new UpdateCredentialResponseTO(null, errorTO), HttpStatus.BAD_REQUEST);
-                default -> new ResponseEntity<>(errorTO, HttpStatus.INTERNAL_SERVER_ERROR);
+                default -> new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
             };
 
         } catch (ClassNotFoundException e) {
-            return new ResponseEntity<>(errorTO, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.redashwood.useridentity.config;
 
 import com.redashwood.useridentity.filter.VersionHeaderFilter;
 import com.redashwood.useridentity.mapper.UserIdentityMapper;
+import com.redashwood.useridentity.mapper.UserIdentityMapperImpl;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.*;
 import com.redashwood.useridentity.service.impl.*;
@@ -25,6 +26,11 @@ public class ApplicationConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserIdentityMapper configureUserIdentityMapper(){
+        return new UserIdentityMapperImpl();
     }
 
     @Bean
