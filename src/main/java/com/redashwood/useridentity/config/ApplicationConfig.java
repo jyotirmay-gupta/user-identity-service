@@ -1,5 +1,6 @@
 package com.redashwood.useridentity.config;
 
+import com.redashwood.useridentity.mapper.UserIdentityMapper;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.*;
 import com.redashwood.useridentity.service.impl.*;
@@ -31,13 +32,14 @@ public class ApplicationConfig {
     }
 
     @Bean
-    RegisterUserService configureRegisterService(UserIdentityRepository userIdentityRepository, IdentityUtils identityUtils){
-        return new RegisterUserServiceImpl(userIdentityRepository, identityUtils);
+    RegisterUserService configureRegisterService(UserIdentityRepository userIdentityRepository, IdentityUtils identityUtils,
+                                                 UserIdentityMapper userIdentityMapper){
+        return new RegisterUserServiceImpl(userIdentityRepository, identityUtils, userIdentityMapper);
     }
 
     @Bean
-    UpdateUserService configureUpdateUserService(UserIdentityRepository userIdentityRepository){
-        return new UpdateUserServiceImpl(userIdentityRepository);
+    UpdateUserService configureUpdateUserService(UserIdentityRepository userIdentityRepository, UserIdentityMapper userIdentityMapper){
+        return new UpdateUserServiceImpl(userIdentityRepository, userIdentityMapper);
     }
 
     @Bean

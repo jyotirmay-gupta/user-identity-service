@@ -1,10 +1,11 @@
 package com.redashwood.useridentity.service.impl;
 
-import com.redashwood.useridentity.dto.*;
-import com.redashwood.useridentity.entity.UserAddressEntity;
-import com.redashwood.useridentity.entity.UserContactEntity;
-import com.redashwood.useridentity.entity.UserCredentialEntity;
+import com.redashwood.useridentity.dto.CredentialTO;
+import com.redashwood.useridentity.dto.RegisterUserRequestTO;
+import com.redashwood.useridentity.dto.RegisterUserResponseTO;
+import com.redashwood.useridentity.dto.UserInformationTO;
 import com.redashwood.useridentity.entity.UserEntity;
+import com.redashwood.useridentity.mapper.UserIdentityMapper;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.RegisterUserService;
 import com.redashwood.useridentity.util.IdentityUtils;
@@ -22,113 +23,39 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     private final IdentityUtils identityUtils;
 
-    public RegisterUserServiceImpl(UserIdentityRepository userIdentityRepository, IdentityUtils identityUtils) {
+    private final UserIdentityMapper userIdentityMapper;
+
+    public RegisterUserServiceImpl(UserIdentityRepository userIdentityRepository, IdentityUtils identityUtils, UserIdentityMapper userIdentityMapper) {
         this.userIdentityRepository = userIdentityRepository;
         this.identityUtils = identityUtils;
+        this.userIdentityMapper = userIdentityMapper;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "register_user_tx")
     @Override
     public RegisterUserResponseTO registerUser(RegisterUserRequestTO registerUserRequestTO) {
 
-        UserContactEntity userContactEntity = buildUserContactEntity(registerUserRequestTO);
-
         String password = identityUtils.generateRandomPassword();
         String encryptedPassword = identityUtils.encryptPassword(password);
-        UserCredentialEntity userCredentialEntity = buildCredential(registerUserRequestTO);
-        userCredentialEntity.setPassword(encryptedPassword);
 
-        UserAddressEntity userAddressEntity = buildUserAddressEntity(registerUserRequestTO);
-
-        UserEntity userEntity = buildUserEntity(registerUserRequestTO, userAddressEntity, userContactEntity, userCredentialEntity);
-
-        userEntity.getAddress().setUser(userEntity);
-        userEntity.getContact().setUser(userEntity);
-        userEntity.getCredential().setUser(userEntity);
+        UserEntity userEntity = userIdentityMapper.buildUserEntityFromRegisterUserRequestTO(registerUserRequestTO);
+        userEntity.getCredential().setPassword(encryptedPassword);
 
         userIdentityRepository.save(userEntity);
 
         LOGGER.info("User {} {} {} registered successfully with id: {}", userEntity.getFirstName(),
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId());
 
-        ContactTO contactTO = buildContactTO(userEntity);
-
-        AddressTO addressTO = buildAddressTO(userEntity);
-
         CredentialTO credentialTO = buildCredentialTO(userEntity, password);
 
-        UserInformationTO userInformationTO = buildUserInformationTO(userEntity, addressTO, contactTO);
+        UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
 
-        return new RegisterUserResponseTO(userInformationTO,
-                credentialTO,
-                null);
-    }
-
-    private static UserInformationTO buildUserInformationTO(UserEntity userEntity, AddressTO addressTO, ContactTO contactTO) {
-        return new UserInformationTO(userEntity.getFirstName(),
-                userEntity.getMiddleName(),
-                userEntity.getLastName(),
-                userEntity.getAge(),
-                userEntity.getGender(),
-                addressTO,
-                contactTO);
+        return new RegisterUserResponseTO(userInformationTO, credentialTO, null);
     }
 
     private static CredentialTO buildCredentialTO(UserEntity userEntity, String password) {
-        return new CredentialTO(userEntity.getCredential().getUsername(),
-                password);
+        return new CredentialTO(userEntity.getCredential().getUsername(), password);
     }
 
-    private static AddressTO buildAddressTO(UserEntity userEntity) {
-        return new AddressTO(userEntity.getAddress().getAddressLine1(),
-                userEntity.getAddress().getAddressLine2(),
-                userEntity.getAddress().getCity(),
-                userEntity.getAddress().getState(),
-                userEntity.getAddress().getPostalCode(),
-                userEntity.getAddress().getCountry());
-    }
 
-    private static ContactTO buildContactTO(UserEntity userEntity) {
-        return new ContactTO(userEntity.getContact().getPrimaryPhoneNumber(),
-                userEntity.getContact().getSecondaryPhoneNumber(),
-                userEntity.getContact().getEmail());
-    }
-
-    private static UserEntity buildUserEntity(RegisterUserRequestTO registerUserRequestTO, UserAddressEntity userAddressEntity, UserContactEntity userContactEntity, UserCredentialEntity userCredentialEntity) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setFirstName(registerUserRequestTO.firstName());
-        userEntity.setMiddleName(registerUserRequestTO.middleName());
-        userEntity.setLastName(registerUserRequestTO.lastName());
-        userEntity.setAge(registerUserRequestTO.age());
-        userEntity.setGender(registerUserRequestTO.gender());
-        userEntity.setAddress(userAddressEntity);
-        userEntity.setContact(userContactEntity);
-        userEntity.setCredential(userCredentialEntity);
-        return userEntity;
-    }
-
-    private static UserContactEntity buildUserContactEntity(RegisterUserRequestTO registerUserRequestTO) {
-        UserContactEntity userContactEntity = new UserContactEntity();
-        userContactEntity.setEmail(registerUserRequestTO.contact().email());
-        userContactEntity.setPrimaryPhoneNumber(registerUserRequestTO.contact().primaryPhoneNumber());
-        userContactEntity.setSecondaryPhoneNumber(registerUserRequestTO.contact().secondaryPhoneNumber());
-        return userContactEntity;
-    }
-
-    private static UserCredentialEntity buildCredential(RegisterUserRequestTO registerUserRequestTO) {
-        UserCredentialEntity userCredentialEntity = new UserCredentialEntity();
-        userCredentialEntity.setUsername(registerUserRequestTO.username());
-        return userCredentialEntity;
-    }
-
-    private static UserAddressEntity buildUserAddressEntity(RegisterUserRequestTO registerUserRequestTO) {
-        UserAddressEntity userAddressEntity = new UserAddressEntity();
-        userAddressEntity.setAddressLine1(registerUserRequestTO.address().addressLine1());
-        userAddressEntity.setAddressLine2(registerUserRequestTO.address().addressLine2());
-        userAddressEntity.setCity(registerUserRequestTO.address().city());
-        userAddressEntity.setState(registerUserRequestTO.address().state());
-        userAddressEntity.setPostalCode(registerUserRequestTO.address().postalCode());
-        userAddressEntity.setCountry(registerUserRequestTO.address().country());
-        return userAddressEntity;
-    }
 }
