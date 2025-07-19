@@ -43,6 +43,7 @@ CREATE TABLE user_identity_schema.user_credential (
     username VARCHAR(255),
     password VARCHAR(255),
     user_id UUID UNIQUE NOT NULL,
+    active BOOLEAN NOT NULL,
     created_on TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_on TIMESTAMP WITH TIME ZONE,
     CONSTRAINT fk_user_credential FOREIGN KEY (user_id)
@@ -60,6 +61,7 @@ CREATE TABLE user_identity_schema.user_address (
     postal_code VARCHAR(20),
     country VARCHAR(100),
     user_id UUID UNIQUE NOT NULL,
+    active BOOLEAN NOT NULL,
     created_on TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_on TIMESTAMP WITH TIME ZONE,
     CONSTRAINT fk_user_address FOREIGN KEY (user_id)
@@ -76,6 +78,7 @@ CREATE TABLE user_identity_schema.user_contact (
     user_id UUID UNIQUE NOT NULL,
     created_on TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_on TIMESTAMP WITH TIME ZONE,
+    active BOOLEAN NOT NULL,
     CONSTRAINT fk_user_contact FOREIGN KEY (user_id)
         REFERENCES user_identity_schema.user_identity (user_id)
         ON DELETE CASCADE

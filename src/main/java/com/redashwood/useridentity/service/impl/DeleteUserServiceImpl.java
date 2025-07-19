@@ -24,10 +24,13 @@ public class DeleteUserServiceImpl implements DeleteUserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_email_tx")
     public DeleteUserResponseTO deleteUserByEmailId(String emailId) {
-        UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
+        UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId, true)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s does not exist.", emailId));
 
         userEntity.setActive(false);
+        userEntity.getAddress().setActive(false);
+        userEntity.getContact().setActive(false);
+        userEntity.getCredential().setActive(false);
         userIdentityRepository.save(userEntity);
 
         LOGGER.info("User {} {} {} deactivated successfully for id: {} and email: {}", userEntity.getFirstName(),
@@ -39,10 +42,13 @@ public class DeleteUserServiceImpl implements DeleteUserService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_username_tx")
     public DeleteUserResponseTO deleteUserByUsername(String username) {
-        UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
+        UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username, true)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s does not exist.", username));
 
         userEntity.setActive(false);
+        userEntity.getAddress().setActive(false);
+        userEntity.getContact().setActive(false);
+        userEntity.getCredential().setActive(false);
         userIdentityRepository.save(userEntity);
 
         LOGGER.info("User {} {} {} deactivated successfully for id: {} and username: {}", userEntity.getFirstName(),

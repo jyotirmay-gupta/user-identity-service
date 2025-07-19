@@ -14,13 +14,13 @@ public interface UserIdentityRepository extends JpaRepository<UserEntity, UUID> 
             "JOIN FETCH u.contact c " +
             "LEFT JOIN FETCH u.address a " +
             "LEFT JOIN FETCH u.credential cr " +
-            "WHERE c.email = :email")
-    Optional<UserEntity> findByEmailWithAllRelations(@Param("email") String email);
+            "WHERE c.email = :email and u.active = :active")
+    Optional<UserEntity> findByEmailWithAllRelations(@Param("email") String email, @Param("active") Boolean active);
 
     @Query("SELECT u FROM UserEntity u " +
             "JOIN FETCH u.credential cr " +
             "LEFT JOIN FETCH u.contact c " +
             "LEFT JOIN FETCH u.address a " +
-            "WHERE cr.username = :username")
-    Optional<UserEntity> findByUsernameWithAllRelations(@Param("username") String username);
+            "WHERE cr.username = :username and u.active = :active")
+    Optional<UserEntity> findByUsernameWithAllRelations(@Param("username") String username, @Param("active") Boolean active);
 }

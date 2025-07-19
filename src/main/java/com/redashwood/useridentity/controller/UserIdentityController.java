@@ -45,17 +45,14 @@ public class UserIdentityController {
     }
 
     @PutMapping(value = "/user/identity", params = "email", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<UpdateUserResponseTO> updateUserByEmailId(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO,
-                                                                    @RequestParam(required = true, name = "email") @NotBlank(message = "Email must not be blank")
-                                                                    @Email(message = "Invalid email format") String emailId) {
+    public ResponseEntity<UpdateUserResponseTO> updateUserByEmailId(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO, @RequestParam(required = true, name = "email") @NotBlank(message = "Email must not be blank") @Email(message = "Invalid email format") String emailId) {
         LOGGER.info("Received request to update user {} {} {} by emailId {}", updateUserRequestTO.firstName(), updateUserRequestTO.middleName(), updateUserRequestTO.lastName(), emailId);
         UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUserByEmailId(updateUserRequestTO, emailId);
         return new ResponseEntity<>(updateUserResponseTO, HttpStatus.OK);
     }
 
     @PutMapping(value = "/user/identity", params = "username", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<UpdateUserResponseTO> updateUserByUsername(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO,
-                                                                     @RequestParam(required = true) @NotBlank(message = "Username must not be blank") String username) {
+    public ResponseEntity<UpdateUserResponseTO> updateUserByUsername(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO, @RequestParam(required = true) @NotBlank(message = "Username must not be blank") String username) {
         LOGGER.info("Received request to update user {} {} {} by username {}", updateUserRequestTO.firstName(), updateUserRequestTO.middleName(), updateUserRequestTO.lastName(), username);
         UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUserByUsername(updateUserRequestTO, username);
         return new ResponseEntity<>(updateUserResponseTO, HttpStatus.OK);

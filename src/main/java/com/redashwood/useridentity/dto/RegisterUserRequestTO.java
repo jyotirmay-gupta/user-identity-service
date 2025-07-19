@@ -32,6 +32,7 @@ public record RegisterUserRequestTO(
 
         @NotBlank(message = "Username is required")
         @Size(max = 50, message = "Username must be at most 50 characters")
+        @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Username must be alphanumeric and may include underscores only (no symbols or spaces)")
         String username
 
 ) {

@@ -27,6 +27,9 @@ public class UserContactEntity {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private UserEntity user;
 
+    @Column(name = "active", nullable = false)
+    private boolean active;
+
     @Column(name = "created_on", nullable = false, updatable = false)
     private OffsetDateTime createdOn;
 
@@ -38,6 +41,7 @@ public class UserContactEntity {
         OffsetDateTime now = OffsetDateTime.now();
         this.createdOn = now;
         this.updatedOn = now;
+        this.active = true;
     }
 
     @PreUpdate
@@ -99,5 +103,13 @@ public class UserContactEntity {
 
     public void setUpdatedOn(OffsetDateTime updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
