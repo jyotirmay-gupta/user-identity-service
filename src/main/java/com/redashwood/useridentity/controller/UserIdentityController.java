@@ -6,14 +6,18 @@ import com.redashwood.useridentity.service.GetUserService;
 import com.redashwood.useridentity.service.RegisterUserService;
 import com.redashwood.useridentity.service.UpdateUserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Validated  // Required to enable parameter-level validation
 public class UserIdentityController {
 
     private static final Logger LOGGER = LogManager.getLogger(UserIdentityController.class);
@@ -41,42 +45,46 @@ public class UserIdentityController {
     }
 
     @PutMapping(value = "/user/identity", params = "email", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<UpdateUserResponseTO> updateUserByEmailId(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO, @RequestParam(required = true) String email) {
+    public ResponseEntity<UpdateUserResponseTO> updateUserByEmailId(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO,
+                                                                    @RequestParam(required = true) @NotBlank(message = "Email must not be blank") @Email(message = "Invalid email format") String email) {
 
         UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUserByEmailId(updateUserRequestTO,email);
         return new ResponseEntity<>(updateUserResponseTO, HttpStatus.OK);
     }
 
     @PutMapping(value = "/user/identity", params = "username", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<UpdateUserResponseTO> updateUserByUsername(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO, @RequestParam(required = true) String username) {
+    public ResponseEntity<UpdateUserResponseTO> updateUserByUsername(@Valid @RequestBody UpdateUserRequestTO updateUserRequestTO,
+                                                                     @RequestParam(required = true) @NotBlank(message = "Username must not be blank") String username) {
 
         UpdateUserResponseTO updateUserResponseTO = updateUserService.updateUserByUsername(updateUserRequestTO, username);
         return new ResponseEntity<>(updateUserResponseTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<GetUserResponseTO> getUserByEmailId(@RequestParam(required = true) String email) {
+    public ResponseEntity<GetUserResponseTO> getUserByEmailId(@RequestParam(required = true) @NotBlank(message = "Email must not be blank") @Email(message = "Invalid email format") String email) {
 
         GetUserResponseTO getUserResponseTO = getUserService.getUserByEmailId(email);
         return new ResponseEntity<>(getUserResponseTO, HttpStatus.OK);
     }
 
     @GetMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<GetUserResponseTO> getUserByUsername(@RequestParam(required = true) String username) {
+    public ResponseEntity<GetUserResponseTO> getUserByUsername(@RequestParam(required = true)
+                                                                   @NotBlank(message = "Username must not be blank") String username) {
 
         GetUserResponseTO getUserResponseTO = getUserService.getUserByUsername(username);
         return new ResponseEntity<>(getUserResponseTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/user/identity", params = "email", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<DeleteUserResponseTO> deleteUserByEmailId(@RequestParam(required = true) String email) {
+    public ResponseEntity<DeleteUserResponseTO> deleteUserByEmailId(@RequestParam(required = true) @NotBlank(message = "Email must not be blank") @Email(message = "Invalid email format") String email) {
 
         DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByEmailId(email);
         return new ResponseEntity<>(deleteUserResponseTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/user/identity", params = "username", produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<DeleteUserResponseTO> deleteUserByUsername(@RequestParam(required = true) String username) {
+    public ResponseEntity<DeleteUserResponseTO> deleteUserByUsername(@RequestParam(required = true)
+                                                                         @NotBlank(message = "Username must not be blank") String username) {
 
         DeleteUserResponseTO deleteUserResponseTO = deleteUserService.deleteUserByUsername(username);
         return new ResponseEntity<>(deleteUserResponseTO, HttpStatus.OK);

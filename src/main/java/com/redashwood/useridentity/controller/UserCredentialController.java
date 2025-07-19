@@ -3,6 +3,7 @@ package com.redashwood.useridentity.controller;
 import com.redashwood.useridentity.dto.UpdateCredentialRequestTO;
 import com.redashwood.useridentity.dto.UpdateCredentialResponseTO;
 import com.redashwood.useridentity.service.UpdateUserCredentialService;
+import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class UserCredentialController {
     }
 
     @PutMapping(value = "/user/credential", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE, headers = "Accept-Version=v1")
-    public ResponseEntity<UpdateCredentialResponseTO> updateUserCredentials(@RequestBody UpdateCredentialRequestTO updateCredentialRequestTO) {
+    public ResponseEntity<UpdateCredentialResponseTO> updateUserCredentials(@Valid @RequestBody UpdateCredentialRequestTO updateCredentialRequestTO) {
         LOGGER.info("Received request to update credentials for {}", updateCredentialRequestTO.username());
         UpdateCredentialResponseTO updateCredentialResponseTO = updateUserCredentialService.updateUserCredential(updateCredentialRequestTO);
         return new ResponseEntity<>(updateCredentialResponseTO, HttpStatus.OK);
