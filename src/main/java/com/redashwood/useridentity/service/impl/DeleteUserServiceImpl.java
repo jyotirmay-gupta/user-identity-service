@@ -1,6 +1,8 @@
 package com.redashwood.useridentity.service.impl;
 
 import com.redashwood.useridentity.dto.DeleteUserResponseTO;
+import com.redashwood.useridentity.entity.UserEntity;
+import com.redashwood.useridentity.exception.UserNotFoundException;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.DeleteUserService;
 import org.apache.logging.log4j.LogManager;
@@ -18,11 +20,29 @@ public class DeleteUserServiceImpl implements DeleteUserService {
 
     @Override
     public DeleteUserResponseTO deleteUserByEmailId(String emailId) {
-        return null;
+        UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s not found.", emailId));
+
+        userEntity.setActive(false);
+        userIdentityRepository.save(userEntity);
+
+        LOGGER.info("User {} {} {} deactivated successfully for id: {} and email: {}", userEntity.getFirstName(),
+                userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), emailId);
+
+        return new DeleteUserResponseTO(String.format("User with emailId %s deleted successfully", emailId), null);
     }
 
     @Override
     public DeleteUserResponseTO deleteUserByUsername(String username) {
-        return null;
+        UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", username));
+
+        userEntity.setActive(false);
+        userIdentityRepository.save(userEntity);
+
+        LOGGER.info("User {} {} {} deactivated successfully for id: {} and username: {}", userEntity.getFirstName(),
+                userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), username);
+
+        return new DeleteUserResponseTO(String.format("User with username %s deleted successfully", username), null);
     }
 }

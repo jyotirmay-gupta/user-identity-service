@@ -1,6 +1,10 @@
 package com.redashwood.useridentity.service.impl;
 
 import com.redashwood.useridentity.dto.GetUserResponseTO;
+import com.redashwood.useridentity.dto.UserInformationTO;
+import com.redashwood.useridentity.entity.UserEntity;
+import com.redashwood.useridentity.exception.UserNotFoundException;
+import com.redashwood.useridentity.mapper.UserIdentityMapper;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.GetUserService;
 import org.apache.logging.log4j.LogManager;
@@ -12,17 +16,38 @@ public class GetUserServiceImpl implements GetUserService {
 
     private final UserIdentityRepository userIdentityRepository;
 
-    public GetUserServiceImpl(UserIdentityRepository userIdentityRepository) {
+    private final UserIdentityMapper userIdentityMapper;
+
+    public GetUserServiceImpl(UserIdentityRepository userIdentityRepository, UserIdentityMapper userIdentityMapper) {
         this.userIdentityRepository = userIdentityRepository;
+        this.userIdentityMapper = userIdentityMapper;
     }
 
     @Override
     public GetUserResponseTO getUserByEmailId(String emailId) {
-        return null;
+        UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s not found.", emailId));
+
+        LOGGER.info("User {} {} {} fetched successfully for id: {} and email: {}", userEntity.getFirstName(),
+                userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), emailId);
+
+        UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
+
+        return new GetUserResponseTO(userInformationTO,
+                null);
     }
 
     @Override
     public GetUserResponseTO getUserByUsername(String username) {
-        return null;
+        UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", username));
+
+        LOGGER.info("User {} {} {} fetched successfully for id: {} and username: {}", userEntity.getFirstName(),
+                userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), username);
+
+        UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
+
+        return new GetUserResponseTO(userInformationTO,
+                null);
     }
 }

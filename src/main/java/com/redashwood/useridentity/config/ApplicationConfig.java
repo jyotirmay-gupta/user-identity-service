@@ -43,8 +43,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    GetUserService configureGetUserService(UserIdentityRepository userIdentityRepository){
-        return new GetUserServiceImpl(userIdentityRepository);
+    GetUserService configureGetUserService(UserIdentityRepository userIdentityRepository, UserIdentityMapper userIdentityMapper){
+        return new GetUserServiceImpl(userIdentityRepository, userIdentityMapper);
     }
 
     @Bean
