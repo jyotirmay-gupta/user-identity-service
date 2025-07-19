@@ -6,7 +6,6 @@ import com.redashwood.useridentity.dto.RegisterUserResponseTO;
 import com.redashwood.useridentity.dto.UserInformationTO;
 import com.redashwood.useridentity.entity.UserEntity;
 import com.redashwood.useridentity.exception.UserAlreadyExistsException;
-import com.redashwood.useridentity.exception.UserNotFoundException;
 import com.redashwood.useridentity.mapper.UserIdentityMapper;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.RegisterUserService;
@@ -37,13 +36,13 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "register_user_tx")
     public RegisterUserResponseTO registerUser(RegisterUserRequestTO registerUserRequestTO) {
 
-        userIdentityRepository.findByEmailWithAllRelations(registerUserRequestTO.contact().email(), true)
-                .ifPresent( u -> {throw new UserAlreadyExistsException("ERR400", "User already exists with emailId %s.",
-                        registerUserRequestTO.contact().email());});
+        userIdentityRepository.findByEmailWithAllRelations(registerUserRequestTO.contact().email(), true).ifPresent(u -> {
+            throw new UserAlreadyExistsException("ERR400", "User already exists with emailId %s.", registerUserRequestTO.contact().email());
+        });
 
-        userIdentityRepository.findByUsernameWithAllRelations(registerUserRequestTO.username(), true)
-                .ifPresent(u -> {throw new UserAlreadyExistsException("ERR400", "User already exists with username %s.",
-                        registerUserRequestTO.username());});
+        userIdentityRepository.findByUsernameWithAllRelations(registerUserRequestTO.username(), true).ifPresent(u -> {
+            throw new UserAlreadyExistsException("ERR400", "User already exists with username %s.", registerUserRequestTO.username());
+        });
 
         String password = identityUtils.generateRandomPassword();
         String encryptedPassword = identityUtils.encryptPassword(password);
@@ -53,8 +52,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         userIdentityRepository.save(userEntity);
 
-        LOGGER.info("User {} {} {} registered successfully with id: {}", userEntity.getFirstName(),
-                userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId());
+        LOGGER.info("User {} {} {} registered successfully with id: {}", userEntity.getFirstName(), userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId());
 
         CredentialTO credentialTO = buildCredentialTO(userEntity, password);
 
