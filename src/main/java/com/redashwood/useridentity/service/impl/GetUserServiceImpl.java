@@ -26,7 +26,7 @@ public class GetUserServiceImpl implements GetUserService {
     @Override
     public GetUserResponseTO getUserByEmailId(String emailId) {
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
-                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s not found.", emailId));
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s does not exist.", emailId));
 
         LOGGER.info("User {} {} {} fetched successfully for id: {} and email: {}", userEntity.getFirstName(),
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), emailId);
@@ -39,7 +39,7 @@ public class GetUserServiceImpl implements GetUserService {
     @Override
     public GetUserResponseTO getUserByUsername(String username) {
         UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
-                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", username));
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s does not exist.", username));
 
         LOGGER.info("User {} {} {} fetched successfully for id: {} and username: {}", userEntity.getFirstName(),
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), username);

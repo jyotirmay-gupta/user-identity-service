@@ -25,7 +25,7 @@ public class DeleteUserServiceImpl implements DeleteUserService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_email_tx")
     public DeleteUserResponseTO deleteUserByEmailId(String emailId) {
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
-                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s not found.", emailId));
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s does not exist.", emailId));
 
         userEntity.setActive(false);
         userIdentityRepository.save(userEntity);
@@ -40,7 +40,7 @@ public class DeleteUserServiceImpl implements DeleteUserService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_username_tx")
     public DeleteUserResponseTO deleteUserByUsername(String username) {
         UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
-                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", username));
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s does not exist.", username));
 
         userEntity.setActive(false);
         userIdentityRepository.save(userEntity);

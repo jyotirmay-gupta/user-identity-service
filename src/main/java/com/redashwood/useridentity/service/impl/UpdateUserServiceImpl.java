@@ -32,7 +32,7 @@ public class UpdateUserServiceImpl implements UpdateUserService {
     public UpdateUserResponseTO updateUserByEmailId(UpdateUserRequestTO updateUserRequestTO, String emailId) {
 
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
-                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s not found.", emailId));
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s does not exist.", emailId));
 
         userIdentityMapper.updateUserEntityFromUpdateUserRequestTO(userEntity, updateUserRequestTO);
 
@@ -50,7 +50,7 @@ public class UpdateUserServiceImpl implements UpdateUserService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "update_user_by_username_tx")
     public UpdateUserResponseTO updateUserByUsername(UpdateUserRequestTO updateUserRequestTO, String username) {
         UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
-                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", username));
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s does not exist.", username));
 
         userIdentityMapper.updateUserEntityFromUpdateUserRequestTO(userEntity, updateUserRequestTO);
 

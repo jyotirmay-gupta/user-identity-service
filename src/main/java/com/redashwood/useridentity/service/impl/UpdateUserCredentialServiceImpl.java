@@ -26,7 +26,7 @@ public class UpdateUserCredentialServiceImpl implements UpdateUserCredentialServ
     @Override
     public UpdateCredentialResponseTO updateUserCredential(UpdateCredentialRequestTO updateCredentialRequestTO) {
         UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(updateCredentialRequestTO.username())
-                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", updateCredentialRequestTO.username()));
+                .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s does not exist.", updateCredentialRequestTO.username()));
 
         String encryptedPassword = identityUtils.encryptPassword(updateCredentialRequestTO.password());
         userEntity.getCredential().setPassword(encryptedPassword);
