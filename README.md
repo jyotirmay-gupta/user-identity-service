@@ -2,6 +2,15 @@
 
 **Copyright (c) 2025 Jyotirmay Gupta**
 
+[![Build Status](https://github.com/jyotirmay-gupta/user-identity-service/actions/workflows/ci.yml/badge.svg)](https://github.com/jyotirmay-gupta/user-identity-service/actions)
+[![License](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/stargazers)
+[![GitHub last commit](https://img.shields.io/github/last-commit/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/commits)
+[![Contributors](https://img.shields.io/github/contributors/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/graphs/contributors)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-v3.5.3-brightgreen)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-21-brightgreen)](https://www.oracle.com/java/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14.5-brightgreen)](https://www.postgresql.org/)
+
 **Project:** User Identity Service  
 **Description:** This service manages user identity data including registration, retrieval, update, deletion, and credential management. It provides a RESTful API for user lifecycle operations, supporting versioning through the `Accept-Version` header.
 
