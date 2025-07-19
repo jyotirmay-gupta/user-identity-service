@@ -2,7 +2,7 @@
 
 **Copyright (c) 2025 Jyotirmay Gupta**
 
-[![Build Status](https://github.com/jyotirmay-gupta/user-identity-service/actions/workflows/ci.yml/badge.svg)](https://github.com/jyotirmay-gupta/user-identity-service/actions)
+[![Build Status](https://github.com/jyotirmay-gupta/user-identity-service/actions/workflows/maven.yml/badge.svg)](https://github.com/jyotirmay-gupta/user-identity-service/actions/workflows/maven.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/commits)
