@@ -7,6 +7,7 @@ import com.redashwood.useridentity.entity.UserCredentialEntity;
 import com.redashwood.useridentity.entity.UserEntity;
 import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.RegisterUserService;
+import com.redashwood.useridentity.util.IdentityUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Isolation;
@@ -19,8 +20,11 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
     private final UserIdentityRepository userIdentityRepository;
 
-    public RegisterUserServiceImpl(UserIdentityRepository userIdentityRepository) {
+    private final IdentityUtils identityUtils;
+
+    public RegisterUserServiceImpl(UserIdentityRepository userIdentityRepository, IdentityUtils identityUtils) {
         this.userIdentityRepository = userIdentityRepository;
+        this.identityUtils = identityUtils;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "register_user_tx")
@@ -29,7 +33,10 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         UserContactEntity userContactEntity = buildUserContactEntity(registerUserRequestTO);
 
+        String password = identityUtils.generateRandomPassword();
+        String encryptedPassword = identityUtils.encryptPassword(password);
         UserCredentialEntity userCredentialEntity = buildCredential(registerUserRequestTO);
+        userCredentialEntity.setPassword(encryptedPassword);
 
         UserAddressEntity userAddressEntity = buildUserAddressEntity(registerUserRequestTO);
 
@@ -48,7 +55,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         AddressTO addressTO = buildAddressTO(userEntity);
 
-        CredentialTO credentialTO = buildCredentialTO(userEntity);
+        CredentialTO credentialTO = buildCredentialTO(userEntity, password);
 
         UserInformationTO userInformationTO = buildUserInformationTO(userEntity, addressTO, contactTO);
 
@@ -67,9 +74,9 @@ public class RegisterUserServiceImpl implements RegisterUserService {
                 contactTO);
     }
 
-    private static CredentialTO buildCredentialTO(UserEntity userEntity) {
+    private static CredentialTO buildCredentialTO(UserEntity userEntity, String password) {
         return new CredentialTO(userEntity.getCredential().getUsername(),
-                userEntity.getCredential().getPassword());
+                password);
     }
 
     private static AddressTO buildAddressTO(UserEntity userEntity) {
@@ -111,8 +118,6 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     private static UserCredentialEntity buildCredential(RegisterUserRequestTO registerUserRequestTO) {
         UserCredentialEntity userCredentialEntity = new UserCredentialEntity();
         userCredentialEntity.setUsername(registerUserRequestTO.username());
-        String password = null;
-        userCredentialEntity.setPassword(password);
         return userCredentialEntity;
     }
 
