@@ -31,8 +31,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
         this.userIdentityMapper = userIdentityMapper;
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "register_user_tx")
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "register_user_tx")
     public RegisterUserResponseTO registerUser(RegisterUserRequestTO registerUserRequestTO) {
 
         String password = identityUtils.generateRandomPassword();

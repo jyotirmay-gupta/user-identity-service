@@ -7,6 +7,9 @@ import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.DeleteUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DeleteUserServiceImpl implements DeleteUserService {
 
@@ -19,6 +22,7 @@ public class DeleteUserServiceImpl implements DeleteUserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_email_tx")
     public DeleteUserResponseTO deleteUserByEmailId(String emailId) {
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s not found.", emailId));
@@ -33,6 +37,7 @@ public class DeleteUserServiceImpl implements DeleteUserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_username_tx")
     public DeleteUserResponseTO deleteUserByUsername(String username) {
         UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", username));

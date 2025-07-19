@@ -53,7 +53,7 @@ public class ApplicationConfig {
     }
 
     @Bean
-    UpdateUserCredentialService configureUpdateUserCredentialService(UserIdentityRepository userIdentityRepository){
-        return new UpdateUserCredentialServiceImpl(userIdentityRepository);
+    UpdateUserCredentialService configureUpdateUserCredentialService(UserIdentityRepository userIdentityRepository, IdentityUtils identityUtils){
+        return new UpdateUserCredentialServiceImpl(userIdentityRepository, identityUtils);
     }
 }

@@ -10,6 +10,9 @@ import com.redashwood.useridentity.repository.UserIdentityRepository;
 import com.redashwood.useridentity.service.UpdateUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 public class UpdateUserServiceImpl implements UpdateUserService {
 
@@ -25,6 +28,7 @@ public class UpdateUserServiceImpl implements UpdateUserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "update_user_by_email_tx")
     public UpdateUserResponseTO updateUserByEmailId(UpdateUserRequestTO updateUserRequestTO, String emailId) {
 
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId)
@@ -43,6 +47,7 @@ public class UpdateUserServiceImpl implements UpdateUserService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "update_user_by_username_tx")
     public UpdateUserResponseTO updateUserByUsername(UpdateUserRequestTO updateUserRequestTO, String username) {
         UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s not found.", username));
