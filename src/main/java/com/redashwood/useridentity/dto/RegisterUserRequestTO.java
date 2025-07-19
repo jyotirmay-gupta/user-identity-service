@@ -28,7 +28,11 @@ public record RegisterUserRequestTO(
         AddressTO address,
 
         @Valid @NotNull(message = "Contact is required")
-        ContactTO contact
+        ContactTO contact,
+
+        @NotBlank(message = "Username is required")
+        @Size(max = 50, message = "Username must be at most 50 characters")
+        String username
 
 ) {
 }
