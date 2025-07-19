@@ -50,7 +50,7 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
 
-        return new RegisterUserResponseTO(userInformationTO, credentialTO, null);
+        return new RegisterUserResponseTO(userInformationTO, credentialTO);
     }
 
     private static CredentialTO buildCredentialTO(UserEntity userEntity, String password) {

@@ -33,7 +33,7 @@ public class DeleteUserServiceImpl implements DeleteUserService {
         LOGGER.info("User {} {} {} deactivated successfully for id: {} and email: {}", userEntity.getFirstName(),
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), emailId);
 
-        return new DeleteUserResponseTO(String.format("User with emailId %s deleted successfully", emailId), null);
+        return new DeleteUserResponseTO(String.format("User with emailId %s deleted successfully", emailId));
     }
 
     @Override
@@ -48,6 +48,6 @@ public class DeleteUserServiceImpl implements DeleteUserService {
         LOGGER.info("User {} {} {} deactivated successfully for id: {} and username: {}", userEntity.getFirstName(),
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), username);
 
-        return new DeleteUserResponseTO(String.format("User with username %s deleted successfully", username), null);
+        return new DeleteUserResponseTO(String.format("User with username %s deleted successfully", username));
     }
 }

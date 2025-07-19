@@ -36,6 +36,6 @@ public class UpdateUserCredentialServiceImpl implements UpdateUserCredentialServ
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), updateCredentialRequestTO.username());
 
         return new UpdateCredentialResponseTO(String.format("Credential for user with username %s updated successfully",
-                updateCredentialRequestTO.username()), null);
+                updateCredentialRequestTO.username()));
     }
 }

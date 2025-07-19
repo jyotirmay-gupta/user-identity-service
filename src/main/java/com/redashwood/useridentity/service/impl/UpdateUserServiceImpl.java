@@ -43,7 +43,7 @@ public class UpdateUserServiceImpl implements UpdateUserService {
 
         UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
 
-        return new UpdateUserResponseTO(userInformationTO, null);
+        return new UpdateUserResponseTO(userInformationTO);
     }
 
     @Override
@@ -61,6 +61,6 @@ public class UpdateUserServiceImpl implements UpdateUserService {
 
         UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
 
-        return new UpdateUserResponseTO(userInformationTO, null);
+        return new UpdateUserResponseTO(userInformationTO);
     }
 }

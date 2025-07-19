@@ -33,8 +33,7 @@ public class GetUserServiceImpl implements GetUserService {
 
         UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
 
-        return new GetUserResponseTO(userInformationTO,
-                null);
+        return new GetUserResponseTO(userInformationTO);
     }
 
     @Override
@@ -47,7 +46,6 @@ public class GetUserServiceImpl implements GetUserService {
 
         UserInformationTO userInformationTO = userIdentityMapper.buildUserInformationTOFromUserEntity(userEntity);
 
-        return new GetUserResponseTO(userInformationTO,
-                null);
+        return new GetUserResponseTO(userInformationTO);
     }
 }

@@ -5,11 +5,7 @@ public class UserIdentityConstants {
     private UserIdentityConstants() {
     }
 
-    public static final String REGISTER_USER_SERVICE = "RegisterUserService";
-    public static final String UPDATE_USER_SERVICE = "UpdateUserService";
-    public static final String GET_USER_SERVICE = "GetUserService";
-    public static final String DELETE_USER_SERVICE = "DeleteUserService";
-    public static final String UPDATE_USER_CREDENTIAL_SERVICE = "UpdateUserCredentialService";
+    public static final String BAD_REQUEST_ERROR_CODE = "ERR400";
     public static final String ACCEPT_VERSION = "Accept-Version";
     public static final String ACCEPT_VERSION_V1 = "v1";
 }

@@ -1,80 +1,60 @@
 package com.redashwood.useridentity.exception;
 
-import com.redashwood.useridentity.dto.*;
+import com.redashwood.useridentity.dto.ErrorTO;
+import com.redashwood.useridentity.dto.GenericErrorResponseTO;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.redashwood.useridentity.util.UserIdentityConstants.*;
+import java.util.stream.Collectors;
 
-@ControllerAdvice
+import static com.redashwood.useridentity.util.UserIdentityConstants.BAD_REQUEST_ERROR_CODE;
+
+@RestControllerAdvice
 public class UserIdentityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {
-
+    public ResponseEntity<GenericErrorResponseTO> handleUserNotFoundException(UserNotFoundException ex) {
         ErrorTO errorTO = new ErrorTO(ex.getErrorCode(), ex.getMessage());
         GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
-
-        String className = ex.getStackTrace().length > 0 ? ex.getStackTrace()[0].getClassName() : null;
-        if (className == null) {
-            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        try {
-            String interfaceName = String.valueOf(Class.forName(className).getInterfaces()[0].getSimpleName());
-            return switch (interfaceName) {
-                case REGISTER_USER_SERVICE ->
-                        new ResponseEntity<>(new RegisterUserResponseTO(null, null, errorTO), HttpStatus.NOT_FOUND);
-                case UPDATE_USER_SERVICE ->
-                        new ResponseEntity<>(new UpdateUserResponseTO(null, errorTO), HttpStatus.NOT_FOUND);
-                case GET_USER_SERVICE ->
-                        new ResponseEntity<>(new GetUserResponseTO(null, errorTO), HttpStatus.NOT_FOUND);
-                case DELETE_USER_SERVICE ->
-                        new ResponseEntity<>(new DeleteUserResponseTO(null, errorTO), HttpStatus.NOT_FOUND);
-                case UPDATE_USER_CREDENTIAL_SERVICE ->
-                        new ResponseEntity<>(new UpdateCredentialResponseTO(null, errorTO), HttpStatus.NOT_FOUND);
-                default -> new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
-            };
-
-        } catch (Exception e) {
-            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationErrors(MethodArgumentNotValidException ex) {
-
+    public ResponseEntity<GenericErrorResponseTO> handleValidationErrors(MethodArgumentNotValidException ex) {
         FieldError fieldError = ex.getBindingResult().getFieldErrors().getFirst();
-        ErrorTO errorTO = new ErrorTO("ERR400", fieldError.getDefaultMessage());
+        ErrorTO errorTO = new ErrorTO(BAD_REQUEST_ERROR_CODE, fieldError.getDefaultMessage());
         GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
+        return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.BAD_REQUEST);
+    }
 
-        String className = ex.getStackTrace().length > 0 ? ex.getStackTrace()[0].getClassName() : null;
-        if (className == null) {
-            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<GenericErrorResponseTO> handleMissingParam(MissingServletRequestParameterException ex) {
+        ErrorTO errorTO = new ErrorTO(BAD_REQUEST_ERROR_CODE, "Missing required parameter: " + ex.getParameterName());
+        GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
+        return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.BAD_REQUEST);
+    }
 
-        try {
-            String simpleClassName = Class.forName(className).getSimpleName();
-            return switch (simpleClassName) {
-                case REGISTER_USER_SERVICE ->
-                        new ResponseEntity<>(new RegisterUserResponseTO(null, null, errorTO), HttpStatus.BAD_REQUEST);
-                case UPDATE_USER_SERVICE ->
-                        new ResponseEntity<>(new UpdateUserResponseTO(null, errorTO), HttpStatus.BAD_REQUEST);
-                case GET_USER_SERVICE ->
-                        new ResponseEntity<>(new GetUserResponseTO(null, errorTO), HttpStatus.BAD_REQUEST);
-                case DELETE_USER_SERVICE ->
-                        new ResponseEntity<>(new DeleteUserResponseTO(null, errorTO), HttpStatus.BAD_REQUEST);
-                case UPDATE_USER_CREDENTIAL_SERVICE ->
-                        new ResponseEntity<>(new UpdateCredentialResponseTO(null, errorTO), HttpStatus.BAD_REQUEST);
-                default -> new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
-            };
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<GenericErrorResponseTO> handleConstraintViolation(ConstraintViolationException ex) {
+        String message = ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", "));
+        ErrorTO errorTO = new ErrorTO(BAD_REQUEST_ERROR_CODE, message);
+        GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
+        return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.BAD_REQUEST);
+    }
 
-        } catch (ClassNotFoundException e) {
-            return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @ExceptionHandler(UnsatisfiedServletRequestParameterException.class)
+    public ResponseEntity<GenericErrorResponseTO> handleUnsatisfiedParams(UnsatisfiedServletRequestParameterException ex) {
+
+        ErrorTO errorTO = new ErrorTO(BAD_REQUEST_ERROR_CODE, "Missing required query parameter: " + ex.getMessage());
+        GenericErrorResponseTO genericErrorResponseTO = new GenericErrorResponseTO(errorTO);
+        return new ResponseEntity<>(genericErrorResponseTO, HttpStatus.BAD_REQUEST);
     }
 }

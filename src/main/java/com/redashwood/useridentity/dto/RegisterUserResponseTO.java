@@ -7,9 +7,7 @@ public record RegisterUserResponseTO(
 
         UserInformationTO userInformation,
 
-        CredentialTO credentials,
-
-        ErrorTO error
+        CredentialTO credentials
 
 ) {
 
