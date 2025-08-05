@@ -14,8 +14,6 @@ import com.jyotirmay.useridentity.service.impl.GetUserServiceImpl;
 import com.jyotirmay.useridentity.service.impl.RegisterUserServiceImpl;
 import com.jyotirmay.useridentity.service.impl.UpdateUserCredentialServiceImpl;
 import com.jyotirmay.useridentity.service.impl.UpdateUserServiceImpl;
-import com.redashwood.useridentity.service.*;
-import com.redashwood.useridentity.service.impl.*;
 import com.jyotirmay.useridentity.util.IdentityUtils;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.context.annotation.Bean;

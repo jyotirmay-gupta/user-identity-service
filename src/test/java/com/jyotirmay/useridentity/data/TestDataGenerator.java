@@ -5,7 +5,6 @@ import com.jyotirmay.useridentity.dto.ContactTO;
 import com.jyotirmay.useridentity.dto.RegisterUserRequestTO;
 import com.jyotirmay.useridentity.dto.UpdateUserRequestTO;
 import com.jyotirmay.useridentity.dto.UserInformationTO;
-import com.redashwood.useridentity.dto.*;
 import com.jyotirmay.useridentity.dto.enums.GenderEnum;
 import com.jyotirmay.useridentity.entity.UserAddressEntity;
 import com.jyotirmay.useridentity.entity.UserContactEntity;

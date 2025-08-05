@@ -5,7 +5,6 @@ import com.jyotirmay.useridentity.dto.CredentialTO;
 import com.jyotirmay.useridentity.dto.RegisterUserRequestTO;
 import com.jyotirmay.useridentity.dto.RegisterUserResponseTO;
 import com.jyotirmay.useridentity.dto.UserInformationTO;
-import com.redashwood.useridentity.dto.*;
 import com.jyotirmay.useridentity.service.RegisterUserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
