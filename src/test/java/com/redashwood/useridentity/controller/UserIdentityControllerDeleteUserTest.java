@@ -22,12 +22,12 @@ class UserIdentityControllerDeleteUserTest {
     private DeleteUserService deleteUserService;
 
     @Test
-    void givenValidEmail_whenDeleteUserByEmailCalled_thenReturnsDeletionConfirmation() {
+    void givenValidEmail_whenDeleteUserByEmailFromParamCalled_thenReturnsDeletionConfirmation() {
 
         DeleteUserResponseTO deleteUserResponseTO = new DeleteUserResponseTO("User with emailId john.doe@example.com deleted successfully");
         Mockito.when(deleteUserService.deleteUserByEmailId("john.doe@example.com")).thenReturn(deleteUserResponseTO);
 
-        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userIdentityController.deleteUserByEmailId("john.doe@example.com");
+        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userIdentityController.deleteUserByEmailIdFromParam("john.doe@example.com");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
