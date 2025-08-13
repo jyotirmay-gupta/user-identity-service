@@ -19,12 +19,12 @@ import com.jyotirmay.useridentity.filter.VersionHeaderFilter;
 import com.jyotirmay.useridentity.mapper.UserIdentityMapper;
 import com.jyotirmay.useridentity.mapper.UserIdentityMapperImpl;
 import com.jyotirmay.useridentity.repository.UserIdentityRepository;
-import com.jyotirmay.useridentity.service.DeleteUserService;
+import com.jyotirmay.useridentity.service.DeactivateUserService;
 import com.jyotirmay.useridentity.service.GetUserService;
 import com.jyotirmay.useridentity.service.RegisterUserService;
 import com.jyotirmay.useridentity.service.UpdateUserCredentialService;
 import com.jyotirmay.useridentity.service.UpdateUserService;
-import com.jyotirmay.useridentity.service.impl.DeleteUserServiceImpl;
+import com.jyotirmay.useridentity.service.impl.DeactivateUserServiceImpl;
 import com.jyotirmay.useridentity.service.impl.GetUserServiceImpl;
 import com.jyotirmay.useridentity.service.impl.RegisterUserServiceImpl;
 import com.jyotirmay.useridentity.service.impl.UpdateUserCredentialServiceImpl;
@@ -84,8 +84,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    DeleteUserService configureDeleteUserService(UserIdentityRepository userIdentityRepository) {
-        return new DeleteUserServiceImpl(userIdentityRepository);
+    DeactivateUserService configureDeleteUserService(UserIdentityRepository userIdentityRepository) {
+        return new DeactivateUserServiceImpl(userIdentityRepository);
     }
 
     @Bean

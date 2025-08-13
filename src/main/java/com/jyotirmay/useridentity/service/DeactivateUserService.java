@@ -12,14 +12,13 @@
  *
  * Licensed under the Apache License Version 2.0. See LICENSE file for more details.
  */
+package com.jyotirmay.useridentity.service;
 
-package com.jyotirmay.useridentity.dto;
+import com.jyotirmay.useridentity.dto.DeactivateUserResponseTO;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+public interface DeactivateUserService {
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public record DeleteUserResponseTO(
+    DeactivateUserResponseTO deactivateUserByEmailId(String emailId);
 
-        String message
-) {
+    DeactivateUserResponseTO deactivateUserByUsername(String username);
 }

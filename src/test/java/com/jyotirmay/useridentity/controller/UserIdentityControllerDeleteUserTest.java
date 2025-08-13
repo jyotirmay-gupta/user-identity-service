@@ -14,8 +14,8 @@
  */
 package com.jyotirmay.useridentity.controller;
 
-import com.jyotirmay.useridentity.dto.DeleteUserResponseTO;
-import com.jyotirmay.useridentity.service.DeleteUserService;
+import com.jyotirmay.useridentity.dto.DeactivateUserResponseTO;
+import com.jyotirmay.useridentity.service.DeactivateUserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,36 +33,36 @@ class UserIdentityControllerDeleteUserTest {
     private UserDeactivationController userDeactivationController;
 
     @Mock
-    private DeleteUserService deleteUserService;
+    private DeactivateUserService deactivateUserService;
 
     @Test
     void givenValidEmail_whenDeleteUserByEmailFromParamCalled_thenReturnsDeletionConfirmation() {
 
-        DeleteUserResponseTO deleteUserResponseTO = new DeleteUserResponseTO("User with emailId john.doe@example.com deleted successfully");
-        Mockito.when(deleteUserService.deleteUserByEmailId("john.doe@example.com")).thenReturn(deleteUserResponseTO);
+        DeactivateUserResponseTO deactivateUserResponseTO = new DeactivateUserResponseTO("User with emailId john.doe@example.com deleted successfully");
+        Mockito.when(deactivateUserService.deactivateUserByEmailId("john.doe@example.com")).thenReturn(deactivateUserResponseTO);
 
-        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userDeactivationController.deactivateUserByEmailFromParam("john.doe@example.com");
+        ResponseEntity<DeactivateUserResponseTO> actualResponseEntity = userDeactivationController.deactivateUserByEmailFromParam("john.doe@example.com");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
         Assertions.assertEquals("User with emailId john.doe@example.com deleted successfully", actualResponseEntity.getBody().message());
 
-        Mockito.verify(deleteUserService, Mockito.times(1)).deleteUserByEmailId("john.doe@example.com");
+        Mockito.verify(deactivateUserService, Mockito.times(1)).deactivateUserByEmailId("john.doe@example.com");
     }
 
     @Test
     void givenValidEmail_whenDeleteUserByUsernameCalled_thenReturnsDeletionConfirmation() {
 
-        DeleteUserResponseTO deleteUserResponseTO = new DeleteUserResponseTO("User with username johndoe123 deleted successfully");
-        Mockito.when(deleteUserService.deleteUserByUsername("johndoe123")).thenReturn(deleteUserResponseTO);
+        DeactivateUserResponseTO deactivateUserResponseTO = new DeactivateUserResponseTO("User with username johndoe123 deleted successfully");
+        Mockito.when(deactivateUserService.deactivateUserByUsername("johndoe123")).thenReturn(deactivateUserResponseTO);
 
-        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userDeactivationController.deactivateUserByUsernameFromParam("johndoe123");
+        ResponseEntity<DeactivateUserResponseTO> actualResponseEntity = userDeactivationController.deactivateUserByUsernameFromParam("johndoe123");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
         Assertions.assertEquals("User with username johndoe123 deleted successfully", actualResponseEntity.getBody().message());
 
-        Mockito.verify(deleteUserService, Mockito.times(1)).deleteUserByUsername("johndoe123");
+        Mockito.verify(deactivateUserService, Mockito.times(1)).deactivateUserByUsername("johndoe123");
     }
 
 

@@ -50,13 +50,12 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "register_user_tx")
     public RegisterUserResponseTO registerUser(RegisterUserRequestTO registerUserRequestTO) {
 
-        userIdentityRepository.findByEmailWithAllRelations(registerUserRequestTO.contact().email(), true).ifPresent(u -> {
-            throw new UserAlreadyExistsException("ERR400", "User already exists with emailId %s.", registerUserRequestTO.contact().email());
-        });
-
-        userIdentityRepository.findByUsernameWithAllRelations(registerUserRequestTO.username(), true).ifPresent(u -> {
-            throw new UserAlreadyExistsException("ERR400", "User already exists with username %s.", registerUserRequestTO.username());
-        });
+        userIdentityRepository.findByEmailOrUsernameWithAllRelations(registerUserRequestTO.contact().email(), registerUserRequestTO.username(), true)
+                .ifPresent(u -> {
+                    throw new UserAlreadyExistsException("ERR400", "User already exists with either emailId %s or with username %s.",
+                            registerUserRequestTO.contact().email(),
+                            registerUserRequestTO.username());
+                });
 
         String password = identityUtils.generateRandomPassword();
         String encryptedPassword = identityUtils.encryptPassword(password);
@@ -66,7 +65,8 @@ public class RegisterUserServiceImpl implements RegisterUserService {
 
         userIdentityRepository.save(userEntity);
 
-        LOGGER.info("User {} {} {} registered successfully with id: {}", userEntity.getFirstName(), userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId());
+        LOGGER.info("User {} {} {} registered successfully with id: {}", userEntity.getFirstName(), userEntity.getMiddleName(),
+                userEntity.getLastName(), userEntity.getUserId());
 
         CredentialTO credentialTO = buildCredentialTO(userEntity, password);
 
@@ -78,6 +78,4 @@ public class RegisterUserServiceImpl implements RegisterUserService {
     private static CredentialTO buildCredentialTO(UserEntity userEntity, String password) {
         return new CredentialTO(userEntity.getCredential().getUsername(), password);
     }
-
-
 }

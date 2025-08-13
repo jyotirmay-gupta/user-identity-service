@@ -38,4 +38,16 @@ public interface UserIdentityRepository extends JpaRepository<UserEntity, UUID> 
             "LEFT JOIN FETCH u.address a " +
             "WHERE cr.username = :username and u.active = :active")
     Optional<UserEntity> findByUsernameWithAllRelations(@Param("username") String username, @Param("active") Boolean active);
+
+    @Query("SELECT u FROM UserEntity u " +
+            "JOIN FETCH u.contact c " +
+            "LEFT JOIN FETCH u.address a " +
+            "LEFT JOIN FETCH u.credential cr " +
+            "WHERE ((:email IS NOT NULL AND c.email = :email) OR (:username IS NOT NULL AND cr.username = :username)) " +
+            "AND u.active = :active")
+    Optional<UserEntity> findByEmailOrUsernameWithAllRelations(
+            @Param("email") String email,
+            @Param("username") String username,
+            @Param("active") Boolean active);
+
 }

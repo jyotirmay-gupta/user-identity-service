@@ -15,30 +15,30 @@
 
 package com.jyotirmay.useridentity.service.impl;
 
-import com.jyotirmay.useridentity.dto.DeleteUserResponseTO;
+import com.jyotirmay.useridentity.dto.DeactivateUserResponseTO;
 import com.jyotirmay.useridentity.entity.UserEntity;
 import com.jyotirmay.useridentity.exception.UserNotFoundException;
 import com.jyotirmay.useridentity.repository.UserIdentityRepository;
-import com.jyotirmay.useridentity.service.DeleteUserService;
+import com.jyotirmay.useridentity.service.DeactivateUserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-public class DeleteUserServiceImpl implements DeleteUserService {
+public class DeactivateUserServiceImpl implements DeactivateUserService {
 
-    private static final Logger LOGGER = LogManager.getLogger(DeleteUserServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(DeactivateUserServiceImpl.class);
 
     private final UserIdentityRepository userIdentityRepository;
 
-    public DeleteUserServiceImpl(UserIdentityRepository userIdentityRepository) {
+    public DeactivateUserServiceImpl(UserIdentityRepository userIdentityRepository) {
         this.userIdentityRepository = userIdentityRepository;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_email_tx")
-    public DeleteUserResponseTO deleteUserByEmailId(String emailId) {
+    public DeactivateUserResponseTO deactivateUserByEmailId(String emailId) {
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId, true)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s does not exist.", emailId));
 
@@ -51,12 +51,12 @@ public class DeleteUserServiceImpl implements DeleteUserService {
         LOGGER.info("User {} {} {} deactivated successfully for id: {} and email: {}", userEntity.getFirstName(),
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), emailId);
 
-        return new DeleteUserResponseTO(String.format("User with emailId %s deleted successfully", emailId));
+        return new DeactivateUserResponseTO(String.format("User with emailId %s deleted successfully", emailId));
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_username_tx")
-    public DeleteUserResponseTO deleteUserByUsername(String username) {
+    public DeactivateUserResponseTO deactivateUserByUsername(String username) {
         UserEntity userEntity = userIdentityRepository.findByUsernameWithAllRelations(username, true)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with username %s does not exist.", username));
 
@@ -69,6 +69,6 @@ public class DeleteUserServiceImpl implements DeleteUserService {
         LOGGER.info("User {} {} {} deactivated successfully for id: {} and username: {}", userEntity.getFirstName(),
                 userEntity.getMiddleName(), userEntity.getLastName(), userEntity.getUserId(), username);
 
-        return new DeleteUserResponseTO(String.format("User with username %s deleted successfully", username));
+        return new DeactivateUserResponseTO(String.format("User with username %s deleted successfully", username));
     }
 }
