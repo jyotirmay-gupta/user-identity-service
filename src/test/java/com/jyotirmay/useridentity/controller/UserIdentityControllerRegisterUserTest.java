@@ -34,7 +34,7 @@ import org.springframework.http.ResponseEntity;
 class UserIdentityControllerRegisterUserTest {
 
     @InjectMocks
-    private UserIdentityController userIdentityController;
+    private UserRegistrationController userRegistrationController;
 
     @Mock
     private RegisterUserService registerUserService;
@@ -49,7 +49,7 @@ class UserIdentityControllerRegisterUserTest {
 
         Mockito.when(registerUserService.registerUser(registerUserRequestTO)).thenReturn(registerUserResponseTO);
 
-        ResponseEntity<RegisterUserResponseTO> actualResponseEntity = userIdentityController.registerUser(registerUserRequestTO);
+        ResponseEntity<RegisterUserResponseTO> actualResponseEntity = userRegistrationController.registerUser(registerUserRequestTO);
 
         Assertions.assertEquals(HttpStatus.CREATED, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());

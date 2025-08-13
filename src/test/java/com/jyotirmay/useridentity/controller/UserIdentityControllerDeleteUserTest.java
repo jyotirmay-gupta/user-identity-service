@@ -30,7 +30,7 @@ import org.springframework.http.ResponseEntity;
 class UserIdentityControllerDeleteUserTest {
 
     @InjectMocks
-    private UserIdentityController userIdentityController;
+    private UserDeactivationController userDeactivationController;
 
     @Mock
     private DeleteUserService deleteUserService;
@@ -41,7 +41,7 @@ class UserIdentityControllerDeleteUserTest {
         DeleteUserResponseTO deleteUserResponseTO = new DeleteUserResponseTO("User with emailId john.doe@example.com deleted successfully");
         Mockito.when(deleteUserService.deleteUserByEmailId("john.doe@example.com")).thenReturn(deleteUserResponseTO);
 
-        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userIdentityController.deleteUserByEmailIdFromParam("john.doe@example.com");
+        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userDeactivationController.deactivateUserByEmailFromParam("john.doe@example.com");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
@@ -56,7 +56,7 @@ class UserIdentityControllerDeleteUserTest {
         DeleteUserResponseTO deleteUserResponseTO = new DeleteUserResponseTO("User with username johndoe123 deleted successfully");
         Mockito.when(deleteUserService.deleteUserByUsername("johndoe123")).thenReturn(deleteUserResponseTO);
 
-        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userIdentityController.deleteUserByUsername("johndoe123");
+        ResponseEntity<DeleteUserResponseTO> actualResponseEntity = userDeactivationController.deactivateUserByUsernameFromParam("johndoe123");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());

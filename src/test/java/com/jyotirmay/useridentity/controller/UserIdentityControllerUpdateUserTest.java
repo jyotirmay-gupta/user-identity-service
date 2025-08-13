@@ -33,13 +33,13 @@ import org.springframework.http.ResponseEntity;
 class UserIdentityControllerUpdateUserTest {
 
     @InjectMocks
-    private UserIdentityController userIdentityController;
+    private UserUpdateController userUpdateController;
 
     @Mock
     private UpdateUserService updateUserService;
 
     @Test
-    void givenValidUpdateUserRequest_whenUpdateUserByEmailCalled_thenReturnsUpdatedUserResponse() {
+    void givenValidUpdateUserRequest_whenUpdateUserByEmailFromParamCalled_thenReturnsUpdatedUserResponse() {
 
         UpdateUserRequestTO updateUserRequestTO = TestDataGenerator.buildUpdateUserRequestTO();
         UserInformationTO userInformationTO = TestDataGenerator.buildUserInformationTO();
@@ -47,7 +47,7 @@ class UserIdentityControllerUpdateUserTest {
 
         Mockito.when(updateUserService.updateUserByEmailId(updateUserRequestTO, "john.doe@example.com")).thenReturn(updateUserResponseTO);
 
-        ResponseEntity<UpdateUserResponseTO> actualResponseEntity = userIdentityController.updateUserByEmailId(updateUserRequestTO, "john.doe@example.com");
+        ResponseEntity<UpdateUserResponseTO> actualResponseEntity = userUpdateController.updateUserByEmailFromParam(updateUserRequestTO, "john.doe@example.com");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
@@ -57,7 +57,7 @@ class UserIdentityControllerUpdateUserTest {
     }
 
     @Test
-    void givenValidUpdateUserRequest_whenUpdateUserByUsernameCalled_thenReturnsUpdatedUserResponse() {
+    void givenValidUpdateUserRequest_whenUpdateUserByUsernameFromParamCalled_thenReturnsUpdatedUserResponse() {
 
         UpdateUserRequestTO updateUserRequestTO = TestDataGenerator.buildUpdateUserRequestTO();
         UserInformationTO userInformationTO = TestDataGenerator.buildUserInformationTO();
@@ -65,7 +65,7 @@ class UserIdentityControllerUpdateUserTest {
 
         Mockito.when(updateUserService.updateUserByUsername(updateUserRequestTO, "johndoe123")).thenReturn(updateUserResponseTO);
 
-        ResponseEntity<UpdateUserResponseTO> actualResponseEntity = userIdentityController.updateUserByUsername(updateUserRequestTO, "johndoe123");
+        ResponseEntity<UpdateUserResponseTO> actualResponseEntity = userUpdateController.updateUserByUsernameFromParam(updateUserRequestTO, "johndoe123");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());

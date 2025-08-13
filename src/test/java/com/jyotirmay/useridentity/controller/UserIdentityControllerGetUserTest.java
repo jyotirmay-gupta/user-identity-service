@@ -32,20 +32,20 @@ import org.springframework.http.ResponseEntity;
 public class UserIdentityControllerGetUserTest {
 
     @InjectMocks
-    private UserIdentityController userIdentityController;
+    private UserQueryController userQueryController;
 
     @Mock
     private GetUserService getUserService;
 
     @Test
-    void givenValidEmail_whenGetUserByEmailCalled_thenReturnsUserResponse() {
+    void givenValidEmail_whenGetUserByEmailFromParamCalled_thenReturnsUserResponse() {
 
         UserInformationTO userInformationTO = TestDataGenerator.buildUserInformationTO();
         GetUserResponseTO getUserResponseTO = new GetUserResponseTO(userInformationTO);
 
         Mockito.when(getUserService.getUserByEmailId("john.doe@example.com")).thenReturn(getUserResponseTO);
 
-        ResponseEntity<GetUserResponseTO> actualResponseEntity = userIdentityController.getUserByEmailId("john.doe@example.com");
+        ResponseEntity<GetUserResponseTO> actualResponseEntity = userQueryController.getUserByEmailFromParam("john.doe@example.com");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
@@ -55,14 +55,14 @@ public class UserIdentityControllerGetUserTest {
     }
 
     @Test
-    void givenValidEmail_whenGetUserByUsernameCalled_thenReturnsUserResponse() {
+    void givenValidEmail_whenGetUserByUsernameFromParamCalled_thenReturnsUserResponse() {
 
         UserInformationTO userInformationTO = TestDataGenerator.buildUserInformationTO();
         GetUserResponseTO getUserResponseTO = new GetUserResponseTO(userInformationTO);
 
         Mockito.when(getUserService.getUserByUsername("johndoe123")).thenReturn(getUserResponseTO);
 
-        ResponseEntity<GetUserResponseTO> actualResponseEntity = userIdentityController.getUserByUsername("johndoe123");
+        ResponseEntity<GetUserResponseTO> actualResponseEntity = userQueryController.getUserByUsernameFromParam("johndoe123");
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
