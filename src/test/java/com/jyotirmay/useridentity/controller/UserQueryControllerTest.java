@@ -28,8 +28,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.function.Function;
+
 @ExtendWith(MockitoExtension.class)
-public class UserIdentityControllerGetUserTest {
+public class UserQueryControllerTest {
 
     @InjectMocks
     private UserQueryController userQueryController;
@@ -40,35 +42,71 @@ public class UserIdentityControllerGetUserTest {
     @Test
     void givenValidEmail_whenGetUserByEmailFromParamCalled_thenReturnsUserResponse() {
 
+        testGetUserByEmail(email -> userQueryController.getUserByEmailFromParam(email));
+    }
+
+    @Test
+    void givenValidEmail_whenGetUserByEmailFromHeaderCalled_thenReturnsUserResponse() {
+
+        testGetUserByEmail(email -> userQueryController.getUserByEmailIdFromHeader(email));
+    }
+
+    @Test
+    void givenValidEmail_whenGetUserByEmailFromPathVariableCalled_thenReturnsUserResponse() {
+
+        testGetUserByEmail(email -> userQueryController.getUserByEmailIdFromPathVariable(email));
+    }
+
+    void testGetUserByEmail(Function<String, ResponseEntity<GetUserResponseTO>> controllerMethod) {
+        String email = "john.doe@example.com";
+
         UserInformationTO userInformationTO = TestDataGenerator.buildUserInformationTO();
         GetUserResponseTO getUserResponseTO = new GetUserResponseTO(userInformationTO);
 
-        Mockito.when(getUserService.getUserByEmailId("john.doe@example.com")).thenReturn(getUserResponseTO);
+        Mockito.when(getUserService.getUserByEmail(email)).thenReturn(getUserResponseTO);
 
-        ResponseEntity<GetUserResponseTO> actualResponseEntity = userQueryController.getUserByEmailFromParam("john.doe@example.com");
+        ResponseEntity<GetUserResponseTO> actualResponseEntity = controllerMethod.apply(email);
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
-        Assertions.assertEquals("john.doe@example.com", actualResponseEntity.getBody().userInformation().contact().email());
+        Assertions.assertEquals(email, actualResponseEntity.getBody().userInformation().contact().email());
 
-        Mockito.verify(getUserService, Mockito.times(1)).getUserByEmailId("john.doe@example.com");
+        Mockito.verify(getUserService, Mockito.times(1)).getUserByEmail(email);
     }
 
     @Test
     void givenValidEmail_whenGetUserByUsernameFromParamCalled_thenReturnsUserResponse() {
 
+        testGetUserByUsername(username -> userQueryController.getUserByUsernameFromParam(username));
+    }
+
+    @Test
+    void givenValidEmail_whenGetUserByUsernameFromHeaderCalled_thenReturnsUserResponse() {
+
+        testGetUserByUsername(username -> userQueryController.getUserByUsernameFromHeader(username));
+    }
+
+    @Test
+    void givenValidEmail_whenGetUserByUsernameFromPathVariableCalled_thenReturnsUserResponse() {
+
+        testGetUserByUsername(username -> userQueryController.getUserByUsernameFromPathVariable(username));
+    }
+
+    void testGetUserByUsername(Function<String, ResponseEntity<GetUserResponseTO>> controllerMethod) {
+        String username = "johndoe123";
+
         UserInformationTO userInformationTO = TestDataGenerator.buildUserInformationTO();
         GetUserResponseTO getUserResponseTO = new GetUserResponseTO(userInformationTO);
 
-        Mockito.when(getUserService.getUserByUsername("johndoe123")).thenReturn(getUserResponseTO);
+        Mockito.when(getUserService.getUserByUsername(username)).thenReturn(getUserResponseTO);
 
-        ResponseEntity<GetUserResponseTO> actualResponseEntity = userQueryController.getUserByUsernameFromParam("johndoe123");
+        ResponseEntity<GetUserResponseTO> actualResponseEntity = controllerMethod.apply(username);
 
         Assertions.assertEquals(HttpStatus.OK, actualResponseEntity.getStatusCode());
         Assertions.assertNotNull(actualResponseEntity.getBody());
         Assertions.assertEquals("john.doe@example.com", actualResponseEntity.getBody().userInformation().contact().email());
 
-        Mockito.verify(getUserService, Mockito.times(1)).getUserByUsername("johndoe123");
+        Mockito.verify(getUserService, Mockito.times(1)).getUserByUsername(username);
     }
 
 }

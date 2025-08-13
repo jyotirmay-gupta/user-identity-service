@@ -38,7 +38,7 @@ public class GetUserServiceImpl implements GetUserService {
     }
 
     @Override
-    public GetUserResponseTO getUserByEmailId(String emailId) {
+    public GetUserResponseTO getUserByEmail(String emailId) {
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId, true)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s does not exist.", emailId));
 

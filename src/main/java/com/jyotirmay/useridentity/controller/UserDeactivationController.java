@@ -32,7 +32,7 @@ public class UserDeactivationController {
                                                                                  @NotBlank(message = "Email must not be blank")
                                                                                  @Email(message = "Invalid email format") String email) {
         logUserDeactivationRequest(SourceType.PARAM, IdentifierType.EMAIL, email);
-        DeactivateUserResponseTO deactivateUserResponseTO = deactivateUserService.deactivateUserByEmailId(email);
+        DeactivateUserResponseTO deactivateUserResponseTO = deactivateUserService.deactivateUserByEmail(email);
         return new ResponseEntity<>(deactivateUserResponseTO, HttpStatus.OK);
     }
 
@@ -48,7 +48,7 @@ public class UserDeactivationController {
     public ResponseEntity<DeactivateUserResponseTO> deactivateUserByEmailFromHeader(@RequestHeader(name = "User-Email") @NotBlank(message = "Email must not be blank")
                                                                                   @Email(message = "Invalid email format") String email) {
         logUserDeactivationRequest(SourceType.HEADER, IdentifierType.EMAIL, email);
-        DeactivateUserResponseTO deactivateUserResponseTO = deactivateUserService.deactivateUserByEmailId(email);
+        DeactivateUserResponseTO deactivateUserResponseTO = deactivateUserService.deactivateUserByEmail(email);
         return new ResponseEntity<>(deactivateUserResponseTO, HttpStatus.OK);
     }
 
@@ -64,7 +64,7 @@ public class UserDeactivationController {
     public ResponseEntity<DeactivateUserResponseTO> deactivateUserByEmailFromPathVariable(@PathVariable(required = true, name = "email") @NotBlank(message = "Email must not be blank")
                                                                             @Email(message = "Invalid email format") String email) {
         logUserDeactivationRequest(SourceType.PATH, IdentifierType.EMAIL, email);
-        DeactivateUserResponseTO deactivateUserResponseTO = deactivateUserService.deactivateUserByEmailId(email);
+        DeactivateUserResponseTO deactivateUserResponseTO = deactivateUserService.deactivateUserByEmail(email);
         return new ResponseEntity<>(deactivateUserResponseTO, HttpStatus.OK);
     }
 

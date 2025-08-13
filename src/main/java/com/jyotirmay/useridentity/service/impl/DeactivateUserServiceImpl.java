@@ -38,7 +38,7 @@ public class DeactivateUserServiceImpl implements DeactivateUserService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED, label = "delete_user_by_email_tx")
-    public DeactivateUserResponseTO deactivateUserByEmailId(String emailId) {
+    public DeactivateUserResponseTO deactivateUserByEmail(String emailId) {
         UserEntity userEntity = userIdentityRepository.findByEmailWithAllRelations(emailId, true)
                 .orElseThrow(() -> new UserNotFoundException("ERR404", "User with emailId %s does not exist.", emailId));
 

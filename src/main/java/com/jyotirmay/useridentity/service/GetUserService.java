@@ -18,7 +18,7 @@ import com.jyotirmay.useridentity.dto.GetUserResponseTO;
 
 public interface GetUserService {
 
-    GetUserResponseTO getUserByEmailId(String emailId);
+    GetUserResponseTO getUserByEmail(String emailId);
 
     GetUserResponseTO getUserByUsername(String username);
 }

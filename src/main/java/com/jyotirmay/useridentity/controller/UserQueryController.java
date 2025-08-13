@@ -36,7 +36,7 @@ public class UserQueryController {
     public ResponseEntity<GetUserResponseTO> getUserByEmailFromParam(@RequestParam(required = true, name = "email") @NotBlank(message = "Email must not be blank")
                                                                          @Email(message = "Invalid email format") String email) {
         logUserQueryInformation(SourceType.PARAM, IdentifierType.EMAIL, email);
-        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmailId(email);
+        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmail(email);
         return ResponseEntity.ok(getUserResponseTO);
     }
 
@@ -51,7 +51,7 @@ public class UserQueryController {
     public ResponseEntity<GetUserResponseTO> getUserByEmailIdFromHeader(@RequestHeader(name = "User-Email") @NotBlank(message = "Email must not be blank")
                                                                             @Email(message = "Invalid email format") String email) {
         logUserQueryInformation(SourceType.HEADER, IdentifierType.EMAIL, email);
-        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmailId(email);
+        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmail(email);
         return ResponseEntity.ok(getUserResponseTO);
     }
 
@@ -67,7 +67,7 @@ public class UserQueryController {
                                                                                   @NotBlank(message = "Email must not be blank") @Email(message = "Invalid email format")
                                                                                   String email) {
         logUserQueryInformation(SourceType.PATH, IdentifierType.EMAIL, email);
-        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmailId(email);
+        GetUserResponseTO getUserResponseTO = getUserService.getUserByEmail(email);
         return ResponseEntity.ok(getUserResponseTO);
     }
 

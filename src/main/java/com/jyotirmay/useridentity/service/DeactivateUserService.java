@@ -18,7 +18,7 @@ import com.jyotirmay.useridentity.dto.DeactivateUserResponseTO;
 
 public interface DeactivateUserService {
 
-    DeactivateUserResponseTO deactivateUserByEmailId(String emailId);
+    DeactivateUserResponseTO deactivateUserByEmail(String emailId);
 
     DeactivateUserResponseTO deactivateUserByUsername(String username);
 }
