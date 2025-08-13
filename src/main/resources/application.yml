@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/user_identity_db?currentSchema=user_identity_schema
+    username: identity_user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # or validate, create, create-drop depending on your needs
+    properties:
+      hibernate:
+        default_schema: user_identity_schema
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8082
+
+logging:
+  level:
+    root: INFO
+    com.jyotirmay: INFO
