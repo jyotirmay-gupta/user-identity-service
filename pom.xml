@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!--
+      Copyright (c) 2025 Jyotirmay Gupta
+
+      Project: User Identity Service
+      Description: This is a personal project by Jyotirmay Gupta that implements a
+      user identity management service using Spring Boot. It provides functionality to
+      register and maintain user identities within a system.
+
+      This code is intended for educational and personal use, demonstrating core backend
+      concepts such as RESTful API design, user registration, integration
+      with persistent storage using Spring Boot.
+
+      Licensed under the Apache License Version 2.0. See LICENSE file for more details.
+    -->
+
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
