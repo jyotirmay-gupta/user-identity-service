@@ -31,7 +31,6 @@ jobs:
       run: mvn -B package -DskipTests --file pom.xml
     - name: Build and run tests with coverage
       run: mvn clean verify
-    - name: Run tests and collect coverage
   test:
     name: Run tests and collect coverage
     runs-on: ubuntu-latest
