@@ -10,6 +10,7 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-v3.5.3-brightgreen)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-21-brightgreen)](https://www.oracle.com/java/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14.5-brightgreen)](https://www.postgresql.org/)
+[![codecov](https://codecov.io/github/jyotirmay-gupta/user-identity-service/graph/badge.svg?token=01HKXVTXK0)](https://codecov.io/github/jyotirmay-gupta/user-identity-service)
 
 **Project:** User Identity Service  
 **Description:** This service manages user identity data including registration, retrieval, update, deletion, and credential management. It provides a RESTful API for user lifecycle operations, supporting versioning through the `Accept-Version` header.
