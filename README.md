@@ -4,12 +4,7 @@
 
 [![Build Status](https://github.com/jyotirmay-gupta/user-identity-service/actions/workflows/maven.yml/badge.svg)](https://github.com/jyotirmay-gupta/user-identity-service/actions/workflows/maven.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/stargazers)
 [![GitHub last commit](https://img.shields.io/github/last-commit/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/commits)
-[![Contributors](https://img.shields.io/github/contributors/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/graphs/contributors)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-v3.5.3-brightgreen)](https://spring.io/projects/spring-boot)
-[![Java](https://img.shields.io/badge/Java-21-brightgreen)](https://www.oracle.com/java/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14.5-brightgreen)](https://www.postgresql.org/)
 [![codecov](https://codecov.io/github/jyotirmay-gupta/user-identity-service/graph/badge.svg?token=01HKXVTXK0)](https://codecov.io/github/jyotirmay-gupta/user-identity-service)
 
 **Project:** User Identity Service  
