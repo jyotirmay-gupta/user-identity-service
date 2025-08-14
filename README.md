@@ -6,6 +6,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/jyotirmay-gupta/user-identity-service.svg)](https://github.com/jyotirmay-gupta/user-identity-service/commits)
 [![codecov](https://codecov.io/github/jyotirmay-gupta/user-identity-service/graph/badge.svg?token=01HKXVTXK0)](https://codecov.io/github/jyotirmay-gupta/user-identity-service)
+[![CodeFactor](https://www.codefactor.io/repository/github/jyotirmay-gupta/user-identity-service/badge)](https://www.codefactor.io/repository/github/jyotirmay-gupta/user-identity-service)
 
 **Project:** User Identity Service  
 **Description:** This service manages user identity data including registration, retrieval, update, deletion, and credential management. It provides a RESTful API for user lifecycle operations, supporting versioning through the `Accept-Version` header.
